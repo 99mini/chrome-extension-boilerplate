@@ -1,50 +1,58 @@
-# React + TypeScript + Vite
+# Chrome Extension Boilerplate
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chrome Extension Boilerplate with `Manifest-v3`, `React`, `Typescript` and `Vite`.
 
-Currently, two official plugins are available:
+# Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- yarn 4.2.2
+- React
+- TypeScript
+- Vite
+- Emotion
+- eslint
+- pretter
+- manifest-v3
 
-## Expanding the ESLint configuration
+# Dev
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Dependency
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+yarn install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## dev
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+yarn dev
 ```
+
+## build
+
+```bash
+yarn build
+```
+
+## lint, pritter, tsc
+
+```bash
+yarn lint
+yarn format
+yarn tsc
+```
+
+run all lint (`eslint`, `prettier`, `tsc`)
+
+```bash
+yarn check
+```
+
+## product
+
+```bash
+yarn build
+```
+
+1. open [chrome://extensions/](chrome://extensions/)
+2. `압축해제된 확장 프로그램을 로드합니다` 클릭
+3. `dist` 폴더 선택

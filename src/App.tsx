@@ -1,9 +1,7 @@
-import NewTab from './newTab'
+import NewTab from './newTab';
 
 function App() {
-  return (
-    <NewTab/>
-  )
+  return <NewTab />;
 }
 
-export default App
+export default App;
