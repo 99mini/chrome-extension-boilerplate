@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/f3cd9983-3004-4c5b-9c8a-8b15d3597f18
 - Vite
 - Emotion
 - eslint
-- pretter
+- prettier
 - manifest-v3
 
 # Dev
