@@ -3,7 +3,7 @@
     "target": "esnext",
     "lib": ["dom", "esnext"],
     "types": ["chrome", "node"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,

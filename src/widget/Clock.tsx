@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 const Container = styled.div`
   font-size: 24px;
@@ -7,7 +7,7 @@ const Container = styled.div`
   margin: 20px 0;
 `;
 
-const Clock: React.FC = () => {
+const Clock = () => {
   const [time, setTime] = useState<string>(new Date().toLocaleTimeString());
 
   useEffect(() => {

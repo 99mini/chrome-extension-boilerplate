@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 const Container = styled.div`
   padding: 20px;
@@ -39,7 +39,7 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-const Todo: React.FC = () => {
+const Todo = () => {
   const [task, setTask] = useState<string>('');
   const [tasks, setTasks] = useState<string[]>([]);
 
@@ -86,7 +86,7 @@ const Todo: React.FC = () => {
       />
       <List>
         {tasks.map((t, index) => (
-          <ListItem key={index}>
+          <ListItem key={t}>
             <div>{t}</div>
             <DeleteButton onClick={() => deleteTask(index)}>X</DeleteButton>
           </ListItem>

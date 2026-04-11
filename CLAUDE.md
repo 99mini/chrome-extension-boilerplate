@@ -27,6 +27,7 @@ This is a **Manifest V3 Chrome extension** that overrides the new tab page. The 
 **Alias:** `@` resolves to `src/` (configured in `vite.config.ts`).
 
 **Component tree:**
+
 - `src/main.tsx` — calls `mock()` then mounts `<App />`
 - `src/App.tsx` — renders `<NewTab />`
 - `src/newTab/index.tsx` — composes widgets

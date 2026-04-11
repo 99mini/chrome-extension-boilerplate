@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
+/** biome-ignore-all lint/suspicious/noExplicitAny: <chrome mock> */
 const mockChrome = {
   storage: {
     sync: {
