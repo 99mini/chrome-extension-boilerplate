@@ -1,9 +1,7 @@
-import type { FC } from 'react';
+import Clock from './widget/Clock';
+import Todo from './widget/Todo';
 
-import Clock from '@/widget/Clock';
-import Todo from '@/widget/Todo';
-
-const NewTab: FC = () => {
+const NewTab = () => {
   return (
     <div>
       <Todo />

@@ -31,7 +31,7 @@ This is a **Manifest V3 Chrome extension** that overrides the new tab page. The 
 - `src/main.tsx` — calls `mock()` then mounts `<App />`
 - `src/App.tsx` — renders `<NewTab />`
 - `src/newTab/index.tsx` — composes widgets
-- `src/widget/` — individual widgets (`Clock`, `Todo`)
+  - `src/newTab/widget/` — individual widgets (`Clock`, `Todo`)
 
 **Styling:** Emotion (`@emotion/react`, `@emotion/styled`) for CSS-in-JS.
 
