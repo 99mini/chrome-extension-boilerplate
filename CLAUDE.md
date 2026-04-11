@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 yarn install        # Install dependencies
 yarn dev            # Start dev server (Vite)
-yarn build          # Build to dist/ (runs both newtab + content script builds)
+yarn build          # Build to dist/ (runs newtab + popup + content script builds)
 yarn build:prod     # Run checks then build
 yarn lint           # Biome lint
 yarn format         # Biome format (write)
@@ -19,38 +19,51 @@ No test framework is configured (`yarn test` exits with error).
 
 ## Build System
 
-The extension requires **two separate Vite builds** because the content script must be a self-contained IIFE (Chrome rejects ES module `import` statements in content scripts):
+The extension requires **two separate Vite builds**:
 
-1. **`vite build`** — builds `index.html` → `dist/assets/newtab-[hash].js` (new tab page, ES module)
-2. **`vite build --config vite.content.config.ts`** — builds `src/content-script/index.tsx` → `dist/contentScript.js` (IIFE, all deps inlined)
+1. **`vite build`** (`vite.config.ts`) — builds new tab and popup together as ES modules:
+   - `src/new-tab/index.html` → `dist/index.html` + `dist/assets/newtab-[hash].js`
+   - `src/popup/index.html` → `dist/popup.html` + `dist/assets/popup-[hash].js`
 
-`yarn build` runs both in sequence. The content script config sets `emptyOutDir: false` to avoid clobbering the newtab output.
+2. **`vite build --config vite.content.config.ts`** — builds content script as a single IIFE (Chrome rejects ES module `import` in content scripts):
+   - `src/content-script/index.tsx` → `dist/contentScript.js` (all deps inlined)
+
+`yarn build` runs both in sequence. The content script config sets `emptyOutDir: false` to avoid clobbering the first build's output.
 
 ## Architecture
 
-This is a **Manifest V3 Chrome extension** with two distinct entry points:
+This is a **Manifest V3 Chrome extension** with three entry points:
 
-### New Tab Page (`src/main.tsx`)
-Overrides the browser new tab via `chrome_url_overrides.newtab`. Entry chain:
-- `src/main.tsx` — calls `mock()` then mounts `<App />`
-- `src/App.tsx` → `src/new-tab/index.tsx` — composes `<Todo />` and `<Clock />` widgets
-- `src/new-tab/widget/` — individual widgets; each has an `index.tsx` and a `*.style.ts` using `@emotion/styled`
+### New Tab (`src/new-tab/`)
+Overrides the browser new tab via `chrome_url_overrides.newtab`.
+- `index.html` + `main.tsx` — entry, calls `mock()` then mounts `<App />`
+- `App.tsx` — renders `<Todo />` and `<Clock />`
+- `components/` — individual widgets, each with `index.tsx` + `*.style.ts`
 
-**Chrome API mocking:** In `yarn dev`, Vite defines `MOCK_CHROME=true`. `src/mock/index.ts` injects a `window.chrome` stub backed by `localStorage`, so the app runs in the browser without an extension context.
+### Popup (`src/popup/`)
+Rendered when the toolbar icon is clicked (`action.default_popup`).
+- `index.html` + `main.tsx` — entry, calls `mock()` then mounts `<App />`
+- `App.tsx` — renders `<Setting />`
+- `components/setting/` — popup UI with `index.tsx` + `*.style.ts`
 
 ### Content Script (`src/content-script/`)
-Injected into all pages (`"matches": ["<all_urls>"]`). Mounts `<FloatingPanel />` inside a **Shadow DOM** to isolate styles from the host page.
+Injected into all pages. Mounts `<FloatingPanel />` inside a **Shadow DOM** to isolate styles from the host page.
+- `index.tsx` — creates shadow root, sets up Emotion cache, mounts component
+- `components/floating-panel/` — component + `*.style.ts`
 
-**Emotion + Shadow DOM:** Because Shadow DOM blocks external stylesheets, a custom Emotion cache is created with `container` pointing to a `<div>` inside the shadow root. The `<CacheProvider>` wraps `<FloatingPanel />` so styled components inject into the shadow root, not `<head>`.
+**Emotion + Shadow DOM:** A custom Emotion cache is created with `container` pointing to a `<div>` inside the shadow root, so `<CacheProvider>` injects styles into the shadow root instead of `<head>`.
 
-Entry: `src/content-script/index.tsx` → `src/content-script/components/floating-panel/`
-- `index.tsx` — component logic
-- `floating-panel.style.ts` — `@emotion/styled` styled components
+## Styling Convention
 
-### Styling Convention
-- New tab widgets: `*.style.ts` alongside the component, exports named styled components
-- Content script: same pattern, but must work inside Shadow DOM (see above)
-- **Alias:** `@` resolves to `src/`
+All styled components live in `*.style.ts` files alongside their component, using `@emotion/styled`. Named exports only (no default exports).
+
+## Chrome API Mocking
+
+In `yarn dev`, Vite defines `MOCK_CHROME=true`. `src/mock/index.ts` injects a `window.chrome` stub backed by `localStorage`. Both `src/new-tab/main.tsx` and `src/popup/main.tsx` call `mock()` on startup.
+
+> Content script is not available in `yarn dev` — only testable via the built extension.
+
+**Alias:** `@` resolves to `src/`
 
 ## Loading the Extension
 
