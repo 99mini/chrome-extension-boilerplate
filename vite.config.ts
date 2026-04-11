@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => ({
       input: {
         newtab: './new-tab.html',
         popup: './popup.html',
+        settings: './settings.html',
       },
       output: {
         entryFileNames: 'assets/[name]-[hash].js',

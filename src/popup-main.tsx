@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import mock from './mock';
-import { App } from './popup/App';
+import { PopupApp } from './popup/popup-app';
 
 mock();
 
@@ -12,6 +12,6 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
+    <PopupApp />
   </StrictMode>
 );

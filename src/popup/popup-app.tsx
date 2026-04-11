@@ -1,6 +1,6 @@
 import { Setting } from './components/setting';
 
-export const App = () => {
+export const PopupApp = () => {
   return (
     <div>
       <Setting />

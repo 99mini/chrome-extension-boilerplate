@@ -6,6 +6,10 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "options_ui": {
+    "page": "settings.html",
+    "open_in_tab": true
+  },
   "permissions": ["storage"],
   "chrome_url_overrides": {
     "newtab": "new-tab.html"

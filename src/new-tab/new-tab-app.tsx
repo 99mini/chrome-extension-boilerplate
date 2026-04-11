@@ -1,6 +1,6 @@
 import { Clock, Todo } from './components';
 
-function App() {
+export const NewTabApp = () => {
   return (
     <div>
       <Todo />
@@ -8,5 +8,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

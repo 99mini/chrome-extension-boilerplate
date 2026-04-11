@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import mock from './mock';
-import { NewTabApp } from './new-tab/new-tab-app';
+import { SettingApp } from './settings/setting-app';
 
 mock();
 
@@ -12,6 +12,6 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <NewTabApp />
+    <SettingApp />
   </StrictMode>
 );
