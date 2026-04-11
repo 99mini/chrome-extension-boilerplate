@@ -13,8 +13,8 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     rollupOptions: {
       input: {
-        newtab: './src/new-tab/index.html',
-        popup: './src/popup/index.html',
+        newtab: './new-tab.html',
+        popup: './popup.html',
       },
       output: {
         entryFileNames: 'assets/[name]-[hash].js',
