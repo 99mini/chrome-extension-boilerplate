@@ -1,4 +1,4 @@
-import NewTab from './newTab';
+import { NewTab } from './new-tab';
 
 function App() {
   return <NewTab />;

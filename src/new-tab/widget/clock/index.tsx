@@ -1,13 +1,7 @@
-import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { Container } from './clock.style';
 
-const Container = styled.div`
-  font-size: 24px;
-  text-align: center;
-  margin: 20px 0;
-`;
-
-const Clock = () => {
+export const Clock = () => {
   const [time, setTime] = useState<string>(new Date().toLocaleTimeString());
 
   useEffect(() => {
@@ -20,5 +14,3 @@ const Clock = () => {
 
   return <Container>{time}</Container>;
 };
-
-export default Clock;
