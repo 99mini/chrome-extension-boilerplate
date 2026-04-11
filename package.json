@@ -10,7 +10,7 @@
     "format": "biome check --write src",
     "tsc": "tsc --noEmit",
     "check": "yarn lint && yarn format && yarn tsc",
-    "build": "vite build",
+    "build": "vite build && vite build --config vite.content.config.ts",
     "build:prod": "yarn check && yarn build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
