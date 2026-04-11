@@ -1,9 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import mock from '../mock';
 import App from './App';
-import mock from './mock';
-
-import './index.css';
 
 mock();
 

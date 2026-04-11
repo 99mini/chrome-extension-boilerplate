@@ -22,7 +22,7 @@ No test framework is configured (`yarn test` exits with error).
 The extension requires **two separate Vite builds** because the content script must be a self-contained IIFE (Chrome rejects ES module `import` statements in content scripts):
 
 1. **`vite build`** — builds `index.html` → `dist/assets/newtab-[hash].js` (new tab page, ES module)
-2. **`vite build --config vite.content.config.ts`** — builds `src/contentScript/index.tsx` → `dist/contentScript.js` (IIFE, all deps inlined)
+2. **`vite build --config vite.content.config.ts`** — builds `src/content-script/index.tsx` → `dist/contentScript.js` (IIFE, all deps inlined)
 
 `yarn build` runs both in sequence. The content script config sets `emptyOutDir: false` to avoid clobbering the newtab output.
 
@@ -38,12 +38,12 @@ Overrides the browser new tab via `chrome_url_overrides.newtab`. Entry chain:
 
 **Chrome API mocking:** In `yarn dev`, Vite defines `MOCK_CHROME=true`. `src/mock/index.ts` injects a `window.chrome` stub backed by `localStorage`, so the app runs in the browser without an extension context.
 
-### Content Script (`src/contentScript/`)
+### Content Script (`src/content-script/`)
 Injected into all pages (`"matches": ["<all_urls>"]`). Mounts `<FloatingPanel />` inside a **Shadow DOM** to isolate styles from the host page.
 
 **Emotion + Shadow DOM:** Because Shadow DOM blocks external stylesheets, a custom Emotion cache is created with `container` pointing to a `<div>` inside the shadow root. The `<CacheProvider>` wraps `<FloatingPanel />` so styled components inject into the shadow root, not `<head>`.
 
-Entry: `src/contentScript/index.tsx` → `src/contentScript/components/floating-panel/`
+Entry: `src/content-script/index.tsx` → `src/content-script/components/floating-panel/`
 - `index.tsx` — component logic
 - `floating-panel.style.ts` — `@emotion/styled` styled components
 

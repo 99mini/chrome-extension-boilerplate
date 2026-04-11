@@ -1,5 +1,5 @@
-import path from 'node:path';
 import react from '@vitejs/plugin-react';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => ({
@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     rollupOptions: {
       input: {
-        newtab: 'index.html',
+        newtab: './src/new-tab/index.html',
+        popup: './src/popup/index.html',
       },
       output: {
         entryFileNames: 'assets/[name]-[hash].js',

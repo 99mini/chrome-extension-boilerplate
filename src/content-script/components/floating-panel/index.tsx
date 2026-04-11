@@ -1,6 +1,19 @@
 import { useState } from 'react';
 
-import { Body, Divider, Header, HeaderTitle, InfoRow, Label, NoteInput, Panel, SaveBtn, SavedMsg, ToggleBtn, Value } from './floating-panel.style';
+import {
+  Body,
+  Divider,
+  Header,
+  HeaderTitle,
+  InfoRow,
+  Label,
+  NoteInput,
+  Panel,
+  SaveBtn,
+  SavedMsg,
+  ToggleBtn,
+  Value,
+} from './floating-panel.style';
 
 export const FloatingPanel = () => {
   const [open, setOpen] = useState(true);

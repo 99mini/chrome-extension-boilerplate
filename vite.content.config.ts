@@ -1,5 +1,5 @@
-import path from 'node:path';
 import react from '@vitejs/plugin-react';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -13,7 +13,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/contentScript/index.tsx'),
+      entry: path.resolve(__dirname, 'src/content-script/index.tsx'),
       name: 'ContentScript',
       formats: ['iife'],
       fileName: () => 'contentScript.js',
