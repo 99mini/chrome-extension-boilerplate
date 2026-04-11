@@ -1,63 +1,102 @@
 # Chrome Extension Boilerplate
 
-Chrome Extension Boilerplate with `Manifest-v3`, `React`, `Typescript` and `Vite`.
+Chrome Extension Boilerplate with **Manifest V3**, **React**, **TypeScript**, **Vite**, and **Emotion**.
 
 https://github.com/user-attachments/assets/08327524-bd91-4681-818e-1975b5d33186
 
-- `Todo`: create, read, remove todo list using `chrome.storage.sync.get`, `chrome.storage.sync.set`
-- `Clock`: display now time(`new Date().toLocaleTimeString()`)
+## Features
 
-# Stack
+### New Tab Page
+Replaces the default new tab with a custom React app.
 
-- yarn 4.2.2
-- React
-- TypeScript
-- Vite
-- Emotion
-- eslint
-- prettier
-- manifest-v3
+- **Todo** — create, read, delete todo items using `chrome.storage.sync`
+- **Clock** — displays current time in real-time
 
-# Dev
+### Content Script (Floating Panel)
+Injected into every page as a floating panel (bottom-right corner).
 
-## Dependency
+- Displays the current page title and domain
+- Per-domain memo saved to `localStorage`
+- Collapsible panel UI, isolated from the host page via Shadow DOM
+
+## Stack
+
+| Category | Library |
+|---|---|
+| Framework | React 18 |
+| Language | TypeScript |
+| Bundler | Vite 5 |
+| Styling | Emotion (`@emotion/styled`) |
+| Linter / Formatter | Biome |
+| Extension API | Manifest V3 |
+| Package Manager | Yarn 4 |
+
+## Getting Started
+
+### Install
 
 ```bash
 yarn install
 ```
 
-## dev
+### Development
 
 ```bash
 yarn dev
 ```
 
-## build
+Runs the new tab page in the browser via Vite dev server. `chrome.storage.sync` is automatically mocked with `localStorage` so you can develop without loading the extension.
+
+> Content script UI is not available in `yarn dev` — load the built extension to test it.
+
+### Build
 
 ```bash
 yarn build
 ```
 
-## lint, pritter, tsc
+Runs two builds in sequence:
+1. New tab page → `dist/assets/`
+2. Content script → `dist/contentScript.js` (single IIFE, all dependencies inlined)
+
+### Code Quality
 
 ```bash
-yarn lint
-yarn format
-yarn tsc
+yarn lint        # Biome lint
+yarn format      # Biome format (auto-fix)
+yarn tsc         # TypeScript type check
+yarn check       # Run all three
 ```
 
-run all lint (`eslint`, `prettier`, `tsc`)
+## Loading the Extension
 
-```bash
-yarn check
+1. Run `yarn build`
+2. Open `chrome://extensions/`
+3. Enable **Developer mode**
+4. Click **Load unpacked** → select the `dist/` folder
+
+After any code change, re-run `yarn build` and click the refresh icon on `chrome://extensions/`.
+
+## Project Structure
+
 ```
-
-## product
-
-```bash
-yarn build
+src/
+├── main.tsx                      # New tab entry point
+├── App.tsx
+├── new-tab/
+│   ├── index.tsx                 # Composes widgets
+│   └── widget/
+│       ├── clock/                # Clock widget
+│       └── todo/                 # Todo widget
+├── contentScript/
+│   ├── index.tsx                 # Mounts FloatingPanel into Shadow DOM
+│   └── components/floating-panel/
+│       ├── index.tsx
+│       └── floating-panel.style.ts
+├── mock/
+│   └── index.ts                  # chrome API mock for dev
+public/
+└── manifest.json
+vite.config.ts                    # New tab build
+vite.content.config.ts            # Content script build (IIFE)
 ```
-
-1. open [chrome://extensions/](chrome://extensions/)
-2. click `load unpacked`
-3. select `dist` folder
