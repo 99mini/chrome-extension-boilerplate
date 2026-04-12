@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import mock from './mock';
 import { NewTabApp } from './new-tab/new-tab-app';
+import mock from './shared/mock';
 
 mock();
 
