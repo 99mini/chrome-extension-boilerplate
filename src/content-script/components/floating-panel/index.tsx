@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { Settings } from '@/shared/settings';
 
 import {
   Body,
@@ -16,9 +17,30 @@ import {
 } from './floating-panel.style';
 
 export const FloatingPanel = () => {
+  const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState(true);
   const [note, setNote] = useState('');
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    chrome.storage.local.get(['showFloatingPanel'], (result) => {
+      if (result.showFloatingPanel !== undefined) {
+        setVisible(result.showFloatingPanel as Settings['showFloatingPanel']);
+      }
+    });
+
+    const listener = (changes: Record<string, { oldValue?: unknown; newValue?: unknown }>, area: string) => {
+      if (area !== 'local') return;
+      if ('showFloatingPanel' in changes) {
+        setVisible(changes.showFloatingPanel.newValue as Settings['showFloatingPanel']);
+      }
+    };
+
+    chrome.storage.onChanged.addListener(listener);
+    return () => chrome.storage.onChanged.removeListener(listener);
+  }, []);
+
+  if (!visible) return null;
 
   const pageInfo = {
     title: document.title,

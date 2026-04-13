@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DEFAULT_SETTINGS, SETTINGS_KEYS, type Settings } from '@/shared/settings';
 import {
   Container,
   PageHeader,
@@ -22,25 +23,21 @@ import {
 } from './settings-page.style';
 
 export const SettingsPage = () => {
-  const [showClock, setShowClock] = useState(true);
-  const [showTodo, setShowTodo] = useState(true);
-  const [showFloatingPanel, setShowFloatingPanel] = useState(true);
-  const [clockFormat, setClockFormat] = useState<'12' | '24'>('24');
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+
+  const set = <K extends keyof Settings>(key: K, value: Settings[K]) =>
+    setSettings((prev) => ({ ...prev, [key]: value }));
+
+  useEffect(() => {
+    chrome.storage.local.get(SETTINGS_KEYS, (result) => {
+      setSettings({ ...DEFAULT_SETTINGS, ...(result as Partial<Settings>) });
+    });
+  }, []);
 
   const handleSave = () => {
-    chrome.storage.local.set(
-      {
-        showClock,
-        showTodo,
-        showFloatingPanel,
-        clockFormat,
-        theme,
-      },
-      () => {
-        alert('설정이 저장되었습니다.');
-      }
-    );
+    chrome.storage.local.set(settings, () => {
+      alert('설정이 저장되었습니다.');
+    });
   };
 
   return (
@@ -64,8 +61,8 @@ export const SettingsPage = () => {
               <Toggle>
                 <ToggleInput
                   type="checkbox"
-                  checked={showClock}
-                  onChange={(e) => setShowClock(e.target.checked)}
+                  checked={settings.showClock}
+                  onChange={(e) => set('showClock', e.target.checked)}
                 />
                 <ToggleSlider />
               </Toggle>
@@ -79,8 +76,8 @@ export const SettingsPage = () => {
               <Toggle>
                 <ToggleInput
                   type="checkbox"
-                  checked={showTodo}
-                  onChange={(e) => setShowTodo(e.target.checked)}
+                  checked={settings.showTodo}
+                  onChange={(e) => set('showTodo', e.target.checked)}
                 />
                 <ToggleSlider />
               </Toggle>
@@ -91,10 +88,7 @@ export const SettingsPage = () => {
                 <SettingLabel>시계 형식</SettingLabel>
                 <SettingDescription>12시간제 또는 24시간제를 선택합니다.</SettingDescription>
               </SettingInfo>
-              <Select
-                value={clockFormat}
-                onChange={(e) => setClockFormat(e.target.value as '12' | '24')}
-              >
+              <Select value={settings.clockFormat} onChange={(e) => set('clockFormat', e.target.value as '12' | '24')}>
                 <option value="24">24시간</option>
                 <option value="12">12시간</option>
               </Select>
@@ -110,15 +104,13 @@ export const SettingsPage = () => {
             <SettingRow>
               <SettingInfo>
                 <SettingLabel>플로팅 패널 표시</SettingLabel>
-                <SettingDescription>
-                  모든 웹 페이지에 플로팅 패널을 표시합니다.
-                </SettingDescription>
+                <SettingDescription>모든 웹 페이지에 플로팅 패널을 표시합니다.</SettingDescription>
               </SettingInfo>
               <Toggle>
                 <ToggleInput
                   type="checkbox"
-                  checked={showFloatingPanel}
-                  onChange={(e) => setShowFloatingPanel(e.target.checked)}
+                  checked={settings.showFloatingPanel}
+                  onChange={(e) => set('showFloatingPanel', e.target.checked)}
                 />
                 <ToggleSlider />
               </Toggle>
@@ -136,10 +128,7 @@ export const SettingsPage = () => {
                 <SettingLabel>테마</SettingLabel>
                 <SettingDescription>확장프로그램의 색상 테마를 선택합니다.</SettingDescription>
               </SettingInfo>
-              <Select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as 'dark' | 'light')}
-              >
+              <Select value={settings.theme} onChange={(e) => set('theme', e.target.value as 'dark' | 'light')}>
                 <option value="dark">다크</option>
                 <option value="light">라이트</option>
               </Select>
