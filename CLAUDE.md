@@ -10,9 +10,9 @@ yarn dev            # Start dev server (Vite)
 yarn build          # Build to dist/ (runs newtab + popup + content script builds)
 yarn build:prod     # Run checks then build
 yarn lint           # Biome lint
-yarn format         # Biome format (write)
+yarn lint:fix         # Biome format (write)
 yarn tsc            # TypeScript type check
-yarn check          # Run lint + format + tsc
+yarn check          # Run lint + tsc
 ```
 
 No test framework is configured (`yarn test` exits with error).
